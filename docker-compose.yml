@@ -27,5 +27,14 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
     networks:
       - my-network
+  angular_app:
+    image: medrouahi/devopsbackend
+    container_name: devops_angular
+    ports:
+      - "4200:80"
+    depends_on:
+      - spring_boot_app
+    networks:
+      - my-network
 networks:
   my-network:
