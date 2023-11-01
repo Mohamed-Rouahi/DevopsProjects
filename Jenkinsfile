@@ -21,14 +21,14 @@ pipeline {
                 }
             }
         }
-        stage('BUILD Backend') {
-            steps {
-                // Use Java 8 for this stage
-                withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-                    sh 'mvn clean install'
-                }
-            }
-        }
+        // stage('BUILD Backend') {
+        //     steps {
+        //         // Use Java 8 for this stage
+        //         withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+        //             sh 'mvn clean install'
+        //         }
+        //     }
+        // }
         // stage("SonarQube Analysis") {
         //     steps {
         //         // Set Java 11 for this stage
@@ -48,18 +48,18 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Checkout Frontend Repo') {
-        //     steps {
-        //         script {
-        //             // Checkout the frontend repository
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: 'master']], 
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
-        //             ])
-        //         }
-        //     }
-        // }
+        stage('Checkout Frontend Repo') {
+            steps {
+                script {
+                    // Checkout the frontend repository
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'master']], 
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                    ])
+                }
+            }
+        }
         // stage('Build Frontend') {
         //     steps {
         //         // Set the Node.js tool defined in Jenkins configuration
@@ -94,28 +94,28 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Build and Push front Image') {
-        //     steps {
-        //         script {
-        //             // Ajoutez l'étape Git checkout pour le référentiel backend ici
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: '*/master']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
-        //             ])
+        stage('Build and Push front Image') {
+            steps {
+                script {
+                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                    ])
 
-        //             // Build the front Docker image
-        //             def frontImage = docker.build('medrouahi/devopsbackend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    // Build the front Docker image
+                    def frontImage = docker.build('medrouahi/devopsfrontend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
-        //             // Authentification Docker Hub avec des informations d'identification secrètes
-        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-        //                 sh "docker login -u medrouahi -p ${pwd}"
-        //                 // Poussez l'image Docker
-        //                 frontImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+                    // Authentification Docker Hub avec des informations d'identification secrètes
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
+                        // Poussez l'image Docker
+                        frontImage.push()
+                    }
+                }
+            }
+        }
        // stage('Deploy to Nexus Repository') {
        //      steps {
                 
