@@ -27,5 +27,5 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
     networks:
       - my-network
-  networks:
-    my-network:
+networks:
+  my-network:
