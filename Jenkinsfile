@@ -9,18 +9,18 @@ pipeline {
                 }
             }
         }
-        stage('Checkout Backend Repo') {
-            steps {
-                script {
-                    // Checkout your source code from the repository.
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/master']], 
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-                    ])
-                }
-            }
-        }
+        // stage('Checkout Backend Repo') {
+        //     steps {
+        //         script {
+        //             // Checkout your source code from the repository.
+        //             checkout([
+        //                 $class: 'GitSCM',
+        //                 branches: [[name: '*/master']], 
+        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+        //             ])
+        //         }
+        //     }
+        // }
         // stage('BUILD Backend') {
         //     steps {
         //         // Use Java 8 for this stage
@@ -29,25 +29,25 @@ pipeline {
         //         }
         //     }
         // }
-        // stage("SonarQube Analysis") {
-        //     steps {
-        //         // Set Java 11 for this stage
-        //         tool name: 'JAVA_HOME', type: 'jdk'
-        //         withEnv(["JAVA_HOME=${tool name: 'JAVA_HOME', type: 'jdk'}"]) {
-        //             withSonarQubeEnv('sonarQube') {
-        //                 script {
-        //                     def scannerHome = tool 'SonarQubeScanner'
-        //                     withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
-        //                         sh '''
-        //                             mvn sonar:sonar \
-        //                                 -Dsonar.java.binaries=target/classes
-        //                         '''
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        stage("SonarQube Analysis") {
+            steps {
+                // Set Java 11 for this stage
+                tool name: 'JAVA_HOME', type: 'jdk'
+                withEnv(["JAVA_HOME=${tool name: 'JAVA_HOME', type: 'jdk'}"]) {
+                    withSonarQubeEnv('sonarQube') {
+                        script {
+                            def scannerHome = tool 'SonarQubeScanner'
+                            withEnv(["PATH+SCANNER=${scannerHome}/bin"]) {
+                                sh '''
+                                    mvn sonar:sonar \
+                                        -Dsonar.java.binaries=target/classes
+                                '''
+                            }
+                        }
+                    }
+                }
+            }
+        }
         // stage('Checkout Frontend Repo') {
         //     steps {
         //         script {
@@ -140,20 +140,20 @@ pipeline {
 
 
         
-         stage('Run Docker Compose') {
-     steps {
-         script {
-             checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: '*/master']], 
-                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-             ])
+ //         stage('Run Docker Compose') {
+ //     steps {
+ //         script {
+ //             checkout([
+ //                 $class: 'GitSCM',
+ //                 branches: [[name: '*/master']], 
+ //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+ //             ])
 
-             // Run the docker-compose command
-             sh 'docker compose up -d' 
-         }
-     }
- }
+ //             // Run the docker-compose command
+ //             sh 'docker compose up -d' 
+ //         }
+ //     }
+ // }
     }
     post {
         success {
