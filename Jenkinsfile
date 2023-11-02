@@ -55,7 +55,7 @@ pipeline {
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: 'master']], 
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/devops-frontend.git']]
                     ])
                 }
             }
@@ -101,11 +101,11 @@ pipeline {
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: '*/master']],
-                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/devops-frontend.git']]
                     ])
 
                     // Build the front Docker image
-                    def frontImage = docker.build('medrouahi/angularapplication', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    def frontImage = docker.build('medrouahi/angularapp', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
                     // Authentification Docker Hub avec des informations d'identification secrètes
                     withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
