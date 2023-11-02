@@ -60,18 +60,18 @@ pipeline {
                 }
             }
         }
-        // stage('Build Frontend') {
-        //     steps {
-        //         // Set the Node.js tool defined in Jenkins configuration
-        //         script {
-        //             def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
-        //             env.PATH = "${nodeJSHome}/bin:${env.PATH}"
-        //         }
-        //         // Now you can run 'npm install' and 'ng build'
-        //         sh 'npm install'
-        //         sh 'npm run ng build'
-        //     }
-        // }
+        stage('Build Frontend') {
+            steps {
+                // Set the Node.js tool defined in Jenkins configuration
+                script {
+                    def nodeJSHome = tool name: 'nodejs' // Use the correct tool name
+                    env.PATH = "${nodeJSHome}/bin:${env.PATH}"
+                }
+                // Now you can run 'npm install' and 'ng build'
+                sh 'npm install'
+                sh 'npm run ng build'
+            }
+        }
         // stage('Build and Push back Images') {
         //     steps {
         //         script {
@@ -94,28 +94,28 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Build and Push front Image') {
-        //     steps {
-        //         script {
-        //             // Ajoutez l'étape Git checkout pour le référentiel backend ici
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: '*/master']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
-        //             ])
+        stage('Build and Push front Image') {
+            steps {
+                script {
+                    // Ajoutez l'étape Git checkout pour le référentiel backend ici
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/Project-devops-frontend.git']]
+                    ])
 
-        //             // Build the front Docker image
-        //             def frontImage = docker.build('medrouahi/devopsfrontend:front', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    // Build the front Docker image
+                    def frontImage = docker.build('medrouahi/angularapplication', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
-        //             // Authentification Docker Hub avec des informations d'identification secrètes
-        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-        //                 sh "docker login -u medrouahi -p ${pwd}"
-        //                 // Poussez l'image Docker
-        //                 frontImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+                    // Authentification Docker Hub avec des informations d'identification secrètes
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
+                        // Poussez l'image Docker
+                        frontImage.push()
+                    }
+                }
+            }
+        }
        // stage('Deploy to Nexus Repository') {
        //      steps {
                 
