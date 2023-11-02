@@ -41,10 +41,6 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
-    volumes:
-      - /var/lib/jenkins/workspace/Project-devops/prometheus-config.yml:/etc/prometheus/prometheus.yml
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
     networks:
       - my-network
 
