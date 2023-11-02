@@ -28,7 +28,7 @@ services:
     networks:
       - my-network
   angular_app:
-    image: medrouahi/devopsfrontend:front
+    image: medrouahi/devopsfrontend:frontend
     container_name: devops_angular
     ports:
       - "4200:80"
