@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout Backend Repo') {
             steps {
                 script {
-                     Checkout your source code from the repository.
+                    
                     checkout([
                         $class: 'GitSCM',
                         branches: [[name: '*/master']], 
