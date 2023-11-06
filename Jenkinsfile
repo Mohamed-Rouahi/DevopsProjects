@@ -148,15 +148,15 @@ pipeline {
     post {
         success {
             emailext(
-                subject: "Success: Devosps pipeline Completed",
-                body: "Devosps pipeline was successful.",
+                subject: "Success: Devops pipeline Completed",
+                body: "Devops pipeline was successful.",
                 to: "mohamed.rouahi@esprit.tn"
             )
         }
         failure {
             emailext(
-                subject: "Failure: Devosps pipeline Failed",
-                body: "Devosps pipeline has failed.",
+                subject: "Failure: Devops pipeline Failed",
+                body: "Devops pipeline has failed.",
                 to: "mohamed.rouahi@esprit.tn"
             )
         }
