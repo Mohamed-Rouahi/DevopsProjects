@@ -108,25 +108,25 @@ pipeline {
         //         }
         //     }
         // }
-        // stage('Deploy to Nexus Repository') {
-        //      steps {
+        stage('Deploy to Nexus Repository') {
+             steps {
                 
             
-        //        script {
-        //                  checkout([
-        //                      $class: 'GitSCM',
-        //                      branches: [[name: '*/master']],
-        //                      userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-        //                  ])
+               script {
+                         checkout([
+                             $class: 'GitSCM',
+                             branches: [[name: '*/master']],
+                             userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+                         ])
                         
-        //                  withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
-        //                      withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-        //          sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
-        //      }
-        //     }
-        //    }
-        //  }
-        //  }
+                         withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
+                             withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+                 sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
+             }
+            }
+           }
+         }
+         }
 
 
 
