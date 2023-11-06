@@ -4,7 +4,6 @@ pipeline {
        stage('Set Java Version') {
            steps {
                script {
-                    Set the default JAVA_HOME to Java 8
                    tool name: 'JAVAA_HOME', type: 'jdk'
                }
             }
@@ -28,6 +27,17 @@ pipeline {
                     sh 'mvn clean install'
                 }
             }
+        }
+        stage ('Jacoco Report') {
+       steps {
+         sh 'mvn jacoco:report'
+       }
+    }
+    
+    stage('JaCoCo Coverage') {
+            steps{
+                   jacoco(execPattern: '**/target/jacoco.exec')
+    }
         }
         stage("SonarQube Analysis") {
            steps {
