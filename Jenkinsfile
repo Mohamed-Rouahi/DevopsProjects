@@ -118,6 +118,19 @@ pipeline {
                 }
             }
         }
+          stage('Run Docker Compose') {
+     steps {
+         script {
+             checkout([
+                 $class: 'GitSCM',
+                 branches: [[name: '*/master']], 
+                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+             ])
+
+             sh 'docker compose up -d' 
+         }
+     }
+ }
         stage('Deploy to Nexus Repository') {
              steps {
                 
@@ -137,19 +150,7 @@ pipeline {
            }
          }
          }        
-         stage('Run Docker Compose') {
-     steps {
-         script {
-             checkout([
-                 $class: 'GitSCM',
-                 branches: [[name: '*/master']], 
-                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-             ])
-
-             sh 'docker compose up -d' 
-         }
-     }
- }
+       
     }
     post {
         success {
