@@ -74,50 +74,50 @@ pipeline {
                 sh 'npm run ng build'
             }
         }
-        // stage('Build and Push back Images') {
-        //     steps {
-        //         script {
+        stage('Build and Push back Images') {
+            steps {
+                script {
                     
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: '*/master']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-        //             ])
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+                    ])
 
                      
-        //             def backendImage = docker.build('medrouahi/springapplication', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    def backendImage = docker.build('medrouahi/springapplication', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
         
-        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-        //                 sh "docker login -u medrouahi -p ${pwd}"
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
         
-        //                 backendImage.push()
-        //             }
-        //         }
-        //     }
-        // }
-        // stage('Build and Push front Image') {
-        //     steps {
-        //         script {
+                        backendImage.push()
+                    }
+                }
+            }
+        }
+        stage('Build and Push front Image') {
+            steps {
+                script {
         
-        //             checkout([
-        //                 $class: 'GitSCM',
-        //                 branches: [[name: '*/master']],
-        //                 userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/devops-frontend.git']]
-        //             ])
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/master']],
+                        userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/devops-frontend.git']]
+                    ])
 
 
-        //             def frontImage = docker.build('medrouahi/angularapp', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
+                    def frontImage = docker.build('medrouahi/angularapp', '-f /var/lib/jenkins/workspace/Project-devops/Dockerfile .')
 
         
-        //             withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
-        //                 sh "docker login -u medrouahi -p ${pwd}"
+                    withCredentials([string(credentialsId: 'docker', variable: 'pwd')]) {
+                        sh "docker login -u medrouahi -p ${pwd}"
        
-        //                 frontImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+                        frontImage.push()
+                    }
+                }
+            }
+        }
           stage('Run Docker Compose') {
      steps {
          script {
@@ -131,25 +131,25 @@ pipeline {
          }
      }
  }
-    // stage('Deploy to Nexus Repository') {
-         //     steps {
+    stage('Deploy to Nexus Repository') {
+             steps {
                 
             
-         //       script {
-         //                 checkout([
-         //                     $class: 'GitSCM',
-         //                     branches: [[name: '*/master']],
-         //                     userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
-         //                 ])
+               script {
+                         checkout([
+                             $class: 'GitSCM',
+                             branches: [[name: '*/master']],
+                             userRemoteConfigs: [[url: 'https://github.com/Mohamed-Rouahi/DevopsProjects.git']]
+                         ])
                         
-         //                 withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
-         //                     withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
-         //         sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
-         //     }
-         //    }
-         //   }
-         // }
-         // }        
+                         withCredentials([usernamePassword(credentialsId: 'nexus-credentiel', passwordVariable: 'pwd', usernameVariable: 'name')]) {
+                             withEnv(["JAVA_HOME=${tool name: 'JAVAA_HOME', type: 'jdk'}"]) {
+                 sh "mvn deploy -s /usr/share/maven/conf/settings.xml -Dusername=\$name -Dpassword=\$pwd"
+             }
+            }
+           }
+         }
+         }        
        
     }
     post {
